@@ -1,4 +1,4 @@
-package hotelService;
+package HotelService.Entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,6 +12,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class Role{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +21,6 @@ public class Role{
     private String title;
 
     private String description;
-
 
 }
 

@@ -1,4 +1,4 @@
-package hotelService;
+package HotelService.Entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,9 +37,6 @@ public class Hotel {
     @Column(name = "service", nullable = false)
     private String service;
 
-    @Column(name = "room_type", nullable = false)
-    private String roomType;
-
     @Column(name = "pool", nullable = false)
     private String pool;
 
@@ -69,5 +66,13 @@ public class Hotel {
 
     @Column(name = "created_by", nullable = false)
     private String createdBy;
+
+    @Column(name = "room_id", nullable = false)
+    private String roomId;
+
+    @OneToMany
+    @JoinColumn
+    private Room room;
+
 
 }

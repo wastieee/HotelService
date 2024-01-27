@@ -1,11 +1,10 @@
-package hotelService;
+package HotelService.Entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -24,9 +23,9 @@ public class UserRent {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "room_id", nullable = false)
-    private Hotel hotel;
+    private Room room;
 
     @Column(name = "start_rent_date", nullable = false)
     private LocalDateTime startRentDate;
