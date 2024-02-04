@@ -2,6 +2,7 @@ package com.service.hotel.Service;
 
 import com.service.hotel.DTO.Converter.Hotel2DTOConverter;
 import com.service.hotel.DTO.HotelDTO;
+import com.service.hotel.DTO.HotelRequestDTO;
 import com.service.hotel.Entity.Hotel;
 import com.service.hotel.Exceptions.NotFoundException;
 import com.service.hotel.Repository.HotelRepository;
@@ -20,8 +21,8 @@ public class HotelService {
     private final Hotel2DTOConverter hotel2DTOConverter;
 
     @Transactional(readOnly = true)
-    public List<Hotel> getAllHotels() {
-        return hotelRepository.findAll();
+    public List<HotelDTO> getAllHotels() {
+        return hotelRepository.findAll().stream().map(hotel2DTOConverter::convert).toList();
     }
 
     @Transactional(readOnly = true)
@@ -36,30 +37,32 @@ public class HotelService {
     }
 
     @Transactional
-    public Hotel create(final Hotel newHotel) {
-        return hotelRepository.save(newHotel);
+    public HotelDTO create(final HotelRequestDTO request) {
+        Hotel hotel = fillOrUpdateHotelEntity(request, new Hotel());
+
+        return hotel2DTOConverter.convert(hotelRepository.save(hotel));
     }
 
     @Transactional
-    public Hotel update(final Hotel newHotel, final Long id) {
-        Hotel existingHotel = hotelRepository.getReferenceById(id);
-        existingHotel.setLocation(newHotel.getLocation());
-        existingHotel.setStar(newHotel.getStar());
-        existingHotel.setInformation(newHotel.getInformation());
-        existingHotel.setWifi(newHotel.getWifi());
-        existingHotel.setService(newHotel.getService());
-        existingHotel.setPool(newHotel.getPool());
-        existingHotel.setParkingSpace(newHotel.getParkingSpace());
-        existingHotel.setFood(newHotel.getFood());
-        existingHotel.setFitness(newHotel.getFitness());
-        existingHotel.setConveniences(newHotel.getConveniences());
-        existingHotel.setPublicAreas(newHotel.getPublicAreas());
-        return hotelRepository.save(existingHotel);
+    public HotelDTO update(final Long id, final HotelRequestDTO request) {
+        Hotel existingHotel = fillOrUpdateHotelEntity(request, hotelRepository.getReferenceById(id));
 
+        return hotel2DTOConverter.convert(hotelRepository.save(existingHotel));
+    }
 
+    private static Hotel fillOrUpdateHotelEntity(HotelRequestDTO request, Hotel hotel) {
+        hotel.setLocation(request.getLocation());
+        hotel.setStar(request.getStar());
+        hotel.setWifi(request.getWifi());
+        hotel.setInformation(request.getInformation());
+        hotel.setService(request.getService());
+        hotel.setPool(request.getPool());
+        hotel.setParkingSpace(request.getParkingSpace());
+        hotel.setFood(request.getFood());
+        hotel.setFitness(request.getFitness());
+        hotel.setConveniences(request.getConveniences());
+        hotel.setPublicAreas(request.getPublicAreas());
 
-
-
-
+        return hotel;
     }
 }
