@@ -1,30 +1,32 @@
-package HotelService.Service;
+package com.service.hotel.Service;
 
-import HotelService.Entity.Hotel;
-import HotelService.Exceptions.NotFoundException;
-import HotelService.Repository.HotelRepository;
+import com.service.hotel.DTO.Converter.Hotel2DTOConverter;
+import com.service.hotel.DTO.HotelDTO;
+import com.service.hotel.Entity.Hotel;
+import com.service.hotel.Exceptions.NotFoundException;
+import com.service.hotel.Repository.HotelRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class HotelService {
 
     private final HotelRepository hotelRepository;
 
-    public HotelService(HotelRepository hotelRepository) {
-        this.hotelRepository = hotelRepository;
-    }
+    private final Hotel2DTOConverter hotel2DTOConverter;
 
     @Transactional(readOnly = true)
-    public List<Hotel> getAllCars() {
+    public List<Hotel> getAllHotels() {
         return hotelRepository.findAll();
     }
 
     @Transactional(readOnly = true)
-    public Hotel getOne(final Long id) {
-        return hotelRepository.findById(id).orElseThrow(() -> new NotFoundException("Номер с таким айди " + id + " не найден"));
+    public HotelDTO getOne(final Long id) {
+        return hotelRepository.findById(id).map(hotel2DTOConverter::convert).orElseThrow(() -> new NotFoundException("Номер с таким айди " + id + " не найден"));
 
     }
 
@@ -40,9 +42,8 @@ public class HotelService {
 
     @Transactional
     public Hotel update(final Hotel newHotel, final Long id) {
-        Hotel existingHotel = getOne(id);
+        Hotel existingHotel = hotelRepository.getReferenceById(id);
         existingHotel.setLocation(newHotel.getLocation());
-        existingHotel.setPricePerNight(newHotel.getPricePerNight());
         existingHotel.setStar(newHotel.getStar());
         existingHotel.setInformation(newHotel.getInformation());
         existingHotel.setWifi(newHotel.getWifi());
@@ -52,9 +53,7 @@ public class HotelService {
         existingHotel.setFood(newHotel.getFood());
         existingHotel.setFitness(newHotel.getFitness());
         existingHotel.setConveniences(newHotel.getConveniences());
-        existingHotel.setTimeOfStay(newHotel.getTimeOfStay());
         existingHotel.setPublicAreas(newHotel.getPublicAreas());
-        existingHotel.setRoomId(newHotel.getRoomId());
         return hotelRepository.save(existingHotel);
 
 

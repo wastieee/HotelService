@@ -1,4 +1,4 @@
-package HotelService.Entity;
+package com.service.hotel.Entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -32,10 +32,11 @@ public class User {
     @Column(name = "age", nullable = false)
     private Integer age;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "role_id", nullable = false,
-            foreignKey = @ForeignKey(name = "FK_USERS_ROLE"))
+    @Column(name = "role", nullable = false)
     private Role role;
+
+    @Column(name = "number_of_guests", nullable = false)
+    private Integer numberOfGuests;
 
 
 }

@@ -1,4 +1,4 @@
-package HotelService.Exceptions;
+package com.service.hotel.Exceptions;
 
 public class NotFoundException extends RuntimeException {
 

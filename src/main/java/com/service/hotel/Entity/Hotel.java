@@ -1,4 +1,4 @@
-package HotelService.Entity;
+package com.service.hotel.Entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "hotel")
@@ -21,9 +22,6 @@ public class Hotel {
 
     @Column(name = "location", nullable = false)
     private String location;
-
-    @Column(name = "price_per_night", nullable = false)
-    private Integer pricePerNight;
 
     @Column(name = "star", nullable = false)
     private Integer star;
@@ -52,12 +50,6 @@ public class Hotel {
     @Column(name = "conveniences", nullable = false)
     private String conveniences;
 
-    @Column(name = "time_of_stay", nullable = false)
-    private Integer timeOfStay;
-
-    @Column(name = "number_of_guests", nullable = false)
-    private Integer numberOfGuests;
-
     @Column(name = "public_areas", nullable = false)
     private String publicAreas;
 
@@ -67,12 +59,8 @@ public class Hotel {
     @Column(name = "created_by", nullable = false)
     private String createdBy;
 
-    @Column(name = "room_id", nullable = false)
-    private String roomId;
-
     @OneToMany
     @JoinColumn
-    private Room room;
-
+    private List<Room> rooms;
 
 }

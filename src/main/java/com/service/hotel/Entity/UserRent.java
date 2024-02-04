@@ -1,4 +1,4 @@
-package HotelService.Entity;
+package com.service.hotel.Entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
